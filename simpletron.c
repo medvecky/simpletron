@@ -1,21 +1,22 @@
 #include <stdio.h>
 
 #include "simpletron_io.h"
+#include "simpletron_cpu.h"
+#include "simpletron_memory.h"
 
 int main()
 {
 	//Memory storage
-	int memory[100] = {+0000};
-	
-	puts("Memory before reading:");
-
-	showMemoryDump(memory);
+	int memory[MEMORY_SIZE] = {+0000};
 
 	showWelcomeMessage();
 	readProgramFromConsole(memory);
+	
+	executeProgram(memory);
 
-	puts("Memory after reading:");
-
+	showCpuDump();
+	showEmptyLine();	
 	showMemoryDump(memory);	
+
 	return 0;
 } // end main

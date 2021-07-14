@@ -3,8 +3,7 @@
 
 #include "simpletron_io.h"
 #include "simpletron_memory.h"
-
-#define RAM_SIZE 100
+#include "simpletron_cpu.h"
 
 static int getDataWord();
 static char * getDataString();
@@ -26,11 +25,13 @@ void  readProgramFromConsole(int *memory)
 	int dataWord;
 	
 	printf("%02zu ? ", wordCounter);
-	while((dataWord = getDataWord()) != -99999 && wordCounter < RAM_SIZE)
+	while((dataWord = getDataWord()) != INPUT_BREAK_MARKER && wordCounter < MEMORY_SIZE)
 	{
 		memoryWrite(memory, wordCounter++, dataWord);
 		printf("%02zu ? ", wordCounter);
 	} // end while readData loop
+
+	puts("*** Program loading completed. ***");
 } // end function readProgramfromConsole
 
 static int getDataWord()
@@ -57,7 +58,7 @@ void showMemoryDump(int *memory)
 		printf("%5zu\t", index);
 	} // end for print header
 
-	for(size_t index = 0; index < RAM_SIZE; index++)
+	for(size_t index = 0; index < MEMORY_SIZE; index++)
 	{
 		if (index % 10 == 0)
 		{
@@ -68,3 +69,29 @@ void showMemoryDump(int *memory)
 	} // end for data output
 	puts("");
 } // end function showMemoryDump
+
+void showEmptyLine()
+{
+	puts("");
+} // end function showEmptyLine
+
+void showExecutionBeginsMessage()
+{
+	puts("*** Program execution begins. ***");
+} // end function showExecutionBeginsMessage
+
+void showExecutionTerminatedMessage()
+{
+	puts("*** Simpletron execution terminated ***");	
+} // end function showExecutionTerminatedMessage
+
+void showCpuDump()
+{
+	puts("REGISTERS:");
+	printf("accumulator:\t\t\t%+05d\n", getCpuAccumulator());
+	printf("instrcutionCounter:\t\t   %02zu\n", getCpuInstructionCounter());
+	printf("instructionRegister:\t\t%+05d\n", getCpuInstructionRegister());
+	printf("operationCode:\t\t\t   %02d\n", getCpuOperationCode());
+	printf("operand:\t\t\t   %02d\n", getCpuOperand());
+} // end function showCpuDump
+
