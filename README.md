@@ -8,8 +8,11 @@ Word can be data or instruction. Instruction always positive; data can be positi
 
 Simpletron CPU contains an accumulator and can handle basic arithmetic operations, memory and console IO operations, basic program branching. 
 
-Currently implemented only input data from console to memory 
-and memory dump.   
+Currently implemented:
+ * memory dump
+ * CPU register dump
+ * CPU main loop where CPU read instructions from memory and
+   handles break program instruction
 
 ## App Setup
 
