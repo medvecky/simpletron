@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 *~
+.*~
+*.swp
+simpletron
 # Object files
 *.o
 *.ko
