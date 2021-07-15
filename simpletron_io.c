@@ -5,8 +5,7 @@
 #include "simpletron_memory.h"
 #include "simpletron_cpu.h"
 
-static int getDataWord();
-static char * getDataString();
+int getDataWord();
 
 void showWelcomeMessage()
 {
@@ -34,11 +33,11 @@ void  readProgramFromConsole(int *memory)
 	puts("*** Program loading completed. ***");
 } // end function readProgramfromConsole
 
-static int getDataWord()
+int getDataWord()
 {
 	int dataWord;
-	int scanfResult;
-	while((scanfResult = scanf("%d", &dataWord)) != 1)
+
+	while(scanf("%d", &dataWord) != 1)
 	{
 		while (getchar() != '\n');
 		puts("Invalid data format.");
@@ -95,3 +94,7 @@ void showCpuDump()
 	printf("operand:\t\t\t   %02d\n", getCpuOperand());
 } // end function showCpuDump
 
+void showDataWord(int dataWord)
+{
+	printf("%+05d\n", dataWord);
+} // end function showDataWord
