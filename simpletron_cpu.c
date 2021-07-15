@@ -4,11 +4,23 @@
 #include "simpletron_memory.h"
 #include "simpletron_io.h"
 
+//CPU commands
+#define HALT 43
+
+#define READ 10 	// Read a word from the terminal into 
+					//a specific location in memory
+
+#define WRITE 11	//Write a word from specific location
+					//in memory to the terminal
+
 static int accumulator = 0;
 static size_t instructionCounter = 0;
 static int instructionRegister = 0;
 static int operationCode = 0;
 static int operand = 0;
+
+static void read(int * memory, size_t address);
+static void write(int * memory, size_t address);
 
 void executeProgram(int *memory)
 {
@@ -20,13 +32,24 @@ void executeProgram(int *memory)
 
 	showExecutionBeginsMessage();
 
-	while (instructionCounter < MEMORY_SIZE  && operationCode != 43)
+	while (instructionCounter < MEMORY_SIZE  && operationCode != HALT)
 	{	
 		instructionRegister = memoryRead(memory, instructionCounter);
 		operationCode = instructionRegister / 100;
 		operand = instructionRegister % 100;
-		printf("counter: %zu\t operation: %d\t operand: %d\n", instructionCounter, operationCode, operand);
+		
+		switch (operationCode)
+		{
+			case READ: 
+				read(memory, operand);
+				break;
+			case WRITE :
+				write(memory, operand);
+				break;
+		} //end switch operation code
+
 		instructionCounter++;
+
 	} // end while main loop
 
 	showExecutionTerminatedMessage();
@@ -56,3 +79,13 @@ int getCpuOperationCode()
 {
 	return operationCode;
 } // end function getCpuOperationCode
+
+static void read(int * memory, size_t address)
+{
+	memoryWrite(memory, address, getDataWord());	
+} // end function read
+
+static void write(int * memory, size_t address)
+{
+	showDataWord(memoryRead(memory, address));	
+} // end function write
