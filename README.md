@@ -13,14 +13,14 @@ Simpletron CPU contains an accumulator and can handle basic arithmetic operation
 * READ  
   ```C
 	#define READ 10 	// Read a word from the terminal into 
-					//a specific location in memory
+				//a specific location in memory
   ```
    format +1050 - 10 operation code 50 operand - memory address 
 
 * WRITE
   ```C
 	#define WRITE 11	//Write a word from specific location
-					//in memory to the terminal
+				//in memory to the terminal
   ```
   format +1150 - 11 operation code 50 operand - memory address 
 
