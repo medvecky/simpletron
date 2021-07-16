@@ -24,6 +24,39 @@ Simpletron CPU contains an accumulator and can handle basic arithmetic operation
   ```
   format +1150 - 11 operation code 50 operand - memory address 
 
+* LOAD
+  ```C
+	#define LOAD 20			// Load a word from a specific memory location 
+		   			// into accumulator
+  ```
+
+* STORE
+  ```C
+	#define STORE 21		// Store a word from accumulator into
+					// a specific location in memory
+   ```
+* ADD
+  ```C
+	#define ADD 30 			// Add word from specific memory location 
+					// to accumulator
+  ```
+
+* SUBSTRACT
+  ```C
+	#define SUBSTRACT 31	// Substract  word from specific memory location 
+					// from accumulator
+  ```
+* DIVIDE
+  ```C
+	#define DIVIDE 32		// Devide a word from accumulator 
+					// by word from specific memory location 
+  ```
+* MULTIPLY
+  ```C
+	#define MULTIPLY 33		// Multiply a word from accumulator 
+					// by word from specific memory location 
+  ```
+
 ## App Setup
 
 ### Prerequisites
