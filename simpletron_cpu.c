@@ -7,22 +7,46 @@
 //CPU commands
 #define HALT 43
 
-#define READ 10 	// Read a word from the terminal into 
-					//a specific location in memory
+#define READ 10 		// Read a word from the terminal into 
+						// a specific location in memory
 
-#define WRITE 11	//Write a word from specific location
-					//in memory to the terminal
+#define WRITE 11		// Write a word from specific location
+						//in memory to the terminal
+
+#define LOAD 20			// Load a word from a specific memory location 
+		   				// into accumulator
+
+#define STORE 21		// Store a word from accumulator into
+						// a specific location in memory
+					
+#define ADD 30 			// Add word from specific memory location 
+						// to accumulator
+
+#define SUBSTRACT 31	// Substract  word from specific memory location 
+						// from accumulator
+
+#define DIVIDE 32		// Devide a word from accumulator 
+						// by word from specific memory location 
+
+#define MULTIPLY 33		// Multiply a word from accumulator 
+						// by word from specific memory location 
 
 static int accumulator = 0;
 static size_t instructionCounter = 0;
 static int instructionRegister = 0;
 static int operationCode = 0;
 static int operand = 0;
-
 static void read(int * memory, size_t address);
 static void write(int * memory, size_t address);
+static void load(int * memory, size_t address);
+static void store(int * memory, size_t address);
+static void add(int * memory, size_t address);
+static void substract(int *memory, size_t address);
+static void divide(int *memory, size_t address);
+static void multiply(int *memory, size_t address);
 
 void executeProgram(int *memory)
+
 {
 	accumulator = 0;
 	instructionCounter = 0;
@@ -46,13 +70,33 @@ void executeProgram(int *memory)
 			case WRITE :
 				write(memory, operand);
 				break;
+			case LOAD:
+				load(memory, operand);
+				break;
+			case STORE:
+				store(memory, operand);
+				break;
+			case ADD:
+				add(memory, operand);
+				break;
+			case SUBSTRACT:
+				substract(memory, operand);
+				break;
+			case DIVIDE:
+				divide(memory, operand);
+				break;
+			case MULTIPLY:
+				multiply(memory, operand);
+				break;
 		} //end switch operation code
 
 		instructionCounter++;
 
 	} // end while main loop
 
+	instructionCounter--;
 	showExecutionTerminatedMessage();
+
 } // end function execute progam
 
 int getCpuAccumulator()
@@ -82,6 +126,7 @@ int getCpuOperationCode()
 
 static void read(int * memory, size_t address)
 {
+	showInputPrompt();
 	memoryWrite(memory, address, getDataWord());	
 } // end function read
 
@@ -89,3 +134,33 @@ static void write(int * memory, size_t address)
 {
 	showDataWord(memoryRead(memory, address));	
 } // end function write
+
+static void load(int * memory, size_t address)
+{
+	accumulator = memoryRead(memory, address);
+} // end function load
+
+static void store(int * memory, size_t address)
+{
+	memoryWrite(memory, address, accumulator);
+} // end function store
+
+static void add(int * memory, size_t address)
+{
+	accumulator += memoryRead(memory, address);
+} // end function add 
+
+static void substract(int * memory, size_t address)
+{
+	accumulator -= memoryRead(memory, address);
+} // end function substract 
+
+static void divide(int * memory, size_t address)
+{
+	accumulator /= memoryRead(memory, address);
+} // end function divide 
+
+static void multiply(int * memory, size_t address)
+{
+	accumulator *= memoryRead(memory, address);
+} // end function multiply 
