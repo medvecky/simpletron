@@ -9,6 +9,7 @@ void showExecutionBeginsMessage();
 void showExecutionTerminatedMessage();
 int getDataWord();
 void showDataWord(int dataWord);
+void showInputPrompt();
 
 #define INPUT_BREAK_MARKER -99999
 

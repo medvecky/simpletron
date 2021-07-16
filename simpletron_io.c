@@ -96,5 +96,10 @@ void showCpuDump()
 
 void showDataWord(int dataWord)
 {
-	printf("%+05d\n", dataWord);
+	printf(" > %+05d\n", dataWord);
 } // end function showDataWord
+
+void showInputPrompt()
+{
+	printf("%s", " ? ");
+} // end function showInputPromt
