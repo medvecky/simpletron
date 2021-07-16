@@ -27,7 +27,7 @@ Simpletron CPU contains an accumulator and can handle basic arithmetic operation
 * LOAD
   ```C
 	#define LOAD 20			// Load a word from a specific memory location 
-		   			// into accumulator
+		   					// into accumulator
   ```
 
 * STORE
