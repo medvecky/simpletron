@@ -31,11 +31,20 @@
 #define MULTIPLY 33		// Multiply a word from accumulator 
 						// by word from specific memory location 
 
+#define BRANCH 40		// Branch to a specific location in memory
+
+#define BRANCHNEG 41	// Branch to a specific location in memory if 
+						// the accumulator is negative
+
+#define BRANCHZERO 42	// Branch to a specific location in memory if 
+						// the accumulator is zero
+
 static int accumulator = 0;
 static size_t instructionCounter = 0;
 static int instructionRegister = 0;
 static int operationCode = 0;
 static int operand = 0;
+
 static void read(int * memory, size_t address);
 static void write(int * memory, size_t address);
 static void load(int * memory, size_t address);
@@ -44,6 +53,9 @@ static void add(int * memory, size_t address);
 static void substract(int *memory, size_t address);
 static void divide(int *memory, size_t address);
 static void multiply(int *memory, size_t address);
+static void branch();
+static void branchneg();
+static void branchzero();
 
 void executeProgram(int *memory)
 
@@ -88,6 +100,15 @@ void executeProgram(int *memory)
 			case MULTIPLY:
 				multiply(memory, operand);
 				break;
+			case BRANCH:
+				branch();
+				continue;
+			case BRANCHNEG:
+				branchneg();
+				continue;
+			case BRANCHZERO:
+				branchzero();
+				continue;
 		} //end switch operation code
 
 		instructionCounter++;
@@ -164,3 +185,32 @@ static void multiply(int * memory, size_t address)
 {
 	accumulator *= memoryRead(memory, address);
 } // end function multiply 
+
+static void branch()
+{
+	instructionCounter = operand;
+} // end function branch
+
+static void branchneg()
+{
+	if (accumulator < 0)
+	{
+		instructionCounter = operand;
+	} // end if check accumulator is negative 
+	else 
+	{
+		instructionCounter++;
+	} // end else if check accumulator negative
+} // end function branchneg
+
+static void branchzero()
+{
+	if (accumulator == 0)
+	{
+		instructionCounter = operand;
+	} // end if check accumulator is zero
+	else 
+	{
+		instructionCounter++;
+	} // end else if check accumulator zero
+} // end function branczero
