@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "simpletron_cpu.h"
 #include "simpletron_memory.h"
 #include "simpletron_io.h"
+
 
 //CPU commands
 #define HALT 43
@@ -44,6 +46,7 @@ static size_t instructionCounter = 0;
 static int instructionRegister = 0;
 static int operationCode = 0;
 static int operand = 0;
+static bool overflowFlag = false;
 
 static void read(int * memory, size_t address);
 static void write(int * memory, size_t address);
@@ -56,6 +59,9 @@ static void multiply(int *memory, size_t address);
 static void branch();
 static void branchneg();
 static void branchzero();
+static bool isAccumulatorOverflow();
+static void checkAccumulatorOverflow();
+static void goToValidLocation();
 
 void executeProgram(int *memory)
 
@@ -65,10 +71,11 @@ void executeProgram(int *memory)
 	instructionRegister = 0;
 	operationCode = 0;
 	operand = 0;
+	overflowFlag = false;
 
 	showExecutionBeginsMessage();
 
-	while (instructionCounter < MEMORY_SIZE  && operationCode != HALT)
+	while (instructionCounter < MEMORY_SIZE  && operationCode != HALT && !overflowFlag)
 	{	
 		instructionRegister = memoryRead(memory, instructionCounter);
 		operationCode = instructionRegister / 100;
@@ -148,7 +155,7 @@ int getCpuOperationCode()
 static void read(int * memory, size_t address)
 {
 	showInputPrompt();
-	memoryWrite(memory, address, getDataWord());	
+	memoryWrite(memory, address, getValidDataWord());
 } // end function read
 
 static void write(int * memory, size_t address)
@@ -169,33 +176,44 @@ static void store(int * memory, size_t address)
 static void add(int * memory, size_t address)
 {
 	accumulator += memoryRead(memory, address);
+	checkAccumulatorOverflow();
 } // end function add 
 
 static void substract(int * memory, size_t address)
 {
 	accumulator -= memoryRead(memory, address);
+	checkAccumulatorOverflow();
 } // end function substract 
 
 static void divide(int * memory, size_t address)
 {
-	accumulator /= memoryRead(memory, address);
+	int divider = memoryRead(memory, address);
+	if (divider == 0)
+	{
+		showDivideByZeroMessage();
+		overflowFlag = true;
+		return;
+	}
+	accumulator /= divider; 
+	checkAccumulatorOverflow();
 } // end function divide 
 
 static void multiply(int * memory, size_t address)
 {
 	accumulator *= memoryRead(memory, address);
+	checkAccumulatorOverflow();
 } // end function multiply 
 
 static void branch()
 {
-	instructionCounter = operand;
+	goToValidLocation();
 } // end function branch
 
 static void branchneg()
 {
 	if (accumulator < 0)
 	{
-		instructionCounter = operand;
+		goToValidLocation();	
 	} // end if check accumulator is negative 
 	else 
 	{
@@ -207,10 +225,37 @@ static void branchzero()
 {
 	if (accumulator == 0)
 	{
-		instructionCounter = operand;
+		goToValidLocation();
 	} // end if check accumulator is zero
 	else 
 	{
 		instructionCounter++;
 	} // end else if check accumulator zero
 } // end function branczero
+
+static bool isAccumulatorOverflow()
+{
+	return (accumulator < LOW_DATA_LIMIT || accumulator > HIGH_DATA_LIMIT);
+}
+
+static void checkAccumulatorOverflow()
+{
+	if (isAccumulatorOverflow())
+	{
+		showAccumulatorOverflowMessage();
+		overflowFlag = true;		
+	} // end if checkOverflow
+} // end function checkAccumulatorOverflow
+
+static void goToValidLocation()
+{
+	if (operand < MEMORY_SIZE)
+	{
+		instructionCounter = operand;
+	}
+	else
+	{
+		showOutOfMemoryMessage();
+		overflowFlag = true;
+	} // end if else check memory limit
+} // end function goToLocationWithValidation
