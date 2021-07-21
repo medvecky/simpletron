@@ -241,7 +241,7 @@ MEMORY:
 07 ? 2195 // Sum = Accumulator
 08 ? 2097 // Accumulator = Counter
 09 ? 3198 // Accumulator -= Step
-10 ? 4213 // If Accumulator == 0 gi to 13
+10 ? 4213 // If Accumulator == 0 go to 13
 11 ? 2197 // Counter = Accumulator 
 12 ? 4004 // Go to 04
 13 ? 2095 // Accumulator = Sum 
