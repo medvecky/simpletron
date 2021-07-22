@@ -1,4 +1,4 @@
-## [0.0.1] - 2021-07-22
+## [v0.1.0] - 2021-07-22
 
 ### Added
 	- Basic CPU, MEMORY, IO implementation
