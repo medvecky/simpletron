@@ -5,15 +5,13 @@
 #include "simpletron_memory.h"
 #include "simpletron_cpu.h"
 
-int getDataWord();
-
 void showWelcomeMessage()
 {
 	puts("*** Welcome to Simpletron! ***");
 	puts("*** Please enter your program one instruction ***");
 	puts("*** (or data word) at a time. I will type the ***");
 	puts("*** location number and question mark (?).    ***");
-	puts("*** You then type word for that location.     ***");
+	puts("*** You then type word for that location. ***");
 	puts("*** Type the sentinel -99999 to stop entering ***");
 	puts("*** your program.  ***");
 } // end function showWelcomeMessage
@@ -26,6 +24,12 @@ void  readProgramFromConsole(int *memory)
 	printf("%02zu ? ", wordCounter);
 	while((dataWord = getDataWord()) != INPUT_BREAK_MARKER && wordCounter < MEMORY_SIZE)
 	{
+		if (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
+		{
+			showOutOfLimitErrorMessage();
+			printf("%02zu ? ", wordCounter);
+			continue;
+		} // end if limit check
 		memoryWrite(memory, wordCounter++, dataWord);
 		printf("%02zu ? ", wordCounter);
 	} // end while readData loop
@@ -37,15 +41,31 @@ int getDataWord()
 {
 	int dataWord;
 
-	while(scanf("%d", &dataWord) != 1)
+	while(scanf("%d", &dataWord) != 1) 
 	{
 		while (getchar() != '\n');
 		puts("Invalid data format.");
 		puts("Please enter correct data word");
+		printf(" %c ", '?');
 	} // end while read data end validation
 	while (getchar() != '\n');
 	return dataWord;
 } // end function getDataWord
+
+int getValidDataWord()
+{
+	int dataWord = getDataWord();
+
+	while (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
+	{
+
+		showOutOfLimitErrorMessage();
+		printf(" %c ", '?');
+		dataWord = getDataWord();
+	} // end while limit check
+
+	return dataWord;
+} // end function getValidDataWord
 
 void showMemoryDump(int *memory)
 {
@@ -103,3 +123,27 @@ void showInputPrompt()
 {
 	printf("%s", " ? ");
 } // end function showInputPromt
+
+void showOutOfLimitErrorMessage()
+{
+	puts("*** Entered data is out of limits ***");
+} // end of showOutOfLimitErrorMessage
+
+void showAccumulatorOverflowMessage()
+{
+	puts("*** FATAL ERROR  ***");
+	puts("*** accumulator overflow  ***");
+} // end function showAccumulatorOverflowMessage
+
+void showOutOfMemoryMessage()
+{
+	puts("*** FATAL ERROR  ***");
+	puts("*** memory overflow  ***");
+} // end function showOutOfMemory
+
+void showDivideByZeroMessage()
+{
+	puts("*** FATAL ERROR  ***");
+	puts("*** Attempt to divide by zero***");
+} // end function showDivideByZeroMessage
+
