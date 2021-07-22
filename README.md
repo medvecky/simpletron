@@ -25,6 +25,14 @@ make simpletron
 
 ## Operation manual
 
+### Command and data format
+DATA - four digit interger (-9999 .. +9999)
+
+COMMAND - four digit positive integer, first two digit operation code last two digit operand 
+```
+1010 - read data from counsole to memory address 0010
+4003 - go to 3rd instruction
+```
 ### Supported commands
 
 * READ  
@@ -72,6 +80,20 @@ make simpletron
   ```CPP
 	#define MULTIPLY 33		// Multiply a word from accumulator 
 							// by word from specific memory location 
+  ```
+* BRANCH
+  ```CPP
+	#define BRANCH 40		// Branch to a specific location in memory
+  ```
+* BRANCHNEG
+  ```
+	#define BRANCHNEG 41	// Branch to a specific location in memory if 
+							// the accumulator is negative
+  ```
+* BRANCHZERO
+  ```
+	#define BRANCHZERO 42	// Branch to a specific location in memory if 
+							// the accumulator is zero
   ```
 
 ### Program examples 
@@ -281,4 +303,57 @@ MEMORY:
 70	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
 80	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
 90	+0000	+0000	+0000	+0000	+0003	+0015	+0005	+0001	+0001	+0005
+```
+
+#### Get max number from numbers series 
+```
+00 ? 1099 // Read default max number 
+01 ? 1098 // Read step of iteration
+02 ? 1097 // Read Series size (Counter)
+03 ? 1096 // Read Nth series number
+04 ? 2096 // Accumulator = Nth number
+05 ? 3199 // Accumulator -= max number
+06 ? 4109 // If Accumulator < 0 go to 09
+07 ? 2096 // Accumulator = Nth number
+08 ? 2199 // Max number = Accumulator
+09 ? 2097 // Accumulator = Iteration counter
+10 ? 3198 // Accumulator -= iteration step
+11 ? 2197 // Couunter = Accumulator
+12 ? 4214 // If counter == 0 go to 14
+13 ? 4003 // go to 3
+14 ? 1199 // Print Max number
+15 ? 4300 // End
+```
+Output:
+```
+*** Program execution begins. ***
+ ? -1000
+ ? 1
+ ? 5
+ ? 100
+ ? -200
+ ? 5
+ ? 3
+ ? 3
+ > +0100
+*** Simpletron execution terminated ***
+REGISTERS:
+accumulator:			+0000
+instrcutionCounter:		   15
+instructionRegister:		+4300
+operationCode:			   43
+operand:			   00
+
+MEMORY:
+ 	    0	    1	    2	    3	    4	    5	    6	    7	    8	    9
+0	+1099	+1098	+1097	+1096	+2096	+3199	+4109	+2096	+2199	+2097
+10	+3198	+2197	+4214	+4003	+1199	+4300	+0000	+0000	+0000	+0000
+20	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+30	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+40	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+50	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+60	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+70	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+80	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000	+0000
+90	+0000	+0000	+0000	+0000	+0000	+0000	+0003	+0000	+0001	+0100
 ```
