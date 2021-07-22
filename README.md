@@ -38,7 +38,7 @@ COMMAND - four digit positive integer, first two digit operation code last two d
 * READ  
   ```CPP
 	#define READ 10	// Read a word from the terminal into 
-					//a specific location in memory
+				//a specific location in memory
   ```
    format +1050 - 10 operation code 50 operand - memory address 
 
@@ -119,9 +119,9 @@ Output:
 REGISTERS:
 accumulator:			+0010
 instrcutionCounter:		   06
-instructionRegister:	+4300
+instructionRegister:		+4300
 operationCode:			   43
-operand:			   	   00
+operand:			   00
 
 MEMORY:
  	    0	    1	    2	    3	    4	    5	    6	    7	    8	    9
