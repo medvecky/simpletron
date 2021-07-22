@@ -86,12 +86,12 @@ COMMAND - four digit positive integer, first two digit operation code last two d
 	#define BRANCH 40		// Branch to a specific location in memory
   ```
 * BRANCHNEG
-  ```
+  ```CPP
 	#define BRANCHNEG 41	// Branch to a specific location in memory if 
 							// the accumulator is negative
   ```
 * BRANCHZERO
-  ```
+  ```CPP
 	#define BRANCHZERO 42	// Branch to a specific location in memory if 
 							// the accumulator is zero
   ```
