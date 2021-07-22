@@ -1,6 +1,9 @@
 #ifndef _SIMPLETRON_CPU_
 #define _SIMPLETRON_CPU_
 
+#define HIGH_DATA_LIMIT 9999
+#define LOW_DATA_LIMIT -9999
+
 void showCpuDump();
 void executeProgram(int *memory);
 int getCpuAccumulator();
