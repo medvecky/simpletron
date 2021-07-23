@@ -10,13 +10,15 @@ int main()
 	int memory[MEMORY_SIZE] = {+0000};
 
 	showWelcomeMessage();
-	readProgramFromConsole(memory);
-	
-	executeProgram(memory);
 
-	showCpuDump();
-	showEmptyLine();	
-	showMemoryDump(memory);	
+	if (readProgram(memory))
+	{
+		executeProgram(memory);
+
+		showCpuDump();
+		showEmptyLine();	
+		showMemoryDump(memory);
+	} // end if check program loaded 
 
 	return 0;
 } // end main
