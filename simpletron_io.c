@@ -1,40 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "simpletron_io.h"
 #include "simpletron_memory.h"
 #include "simpletron_cpu.h"
 
+static void readProgramFromFile(int *memory, FILE *sourceFile);
+
+static FILE *openSourceFile();
+
 void showWelcomeMessage()
 {
 	puts("*** Welcome to Simpletron! ***");
-	puts("*** Please enter your program one instruction ***");
-	puts("*** (or data word) at a time. I will type the ***");
-	puts("*** location number and question mark (?).    ***");
-	puts("*** You then type word for that location. ***");
-	puts("*** Type the sentinel -99999 to stop entering ***");
-	puts("*** your program.  ***");
 } // end function showWelcomeMessage
 
-void  readProgramFromConsole(int *memory)
+bool readProgram(int *memory)
+{
+	FILE * sourceFile = openSourceFile();
+	
+	if(sourceFile == NULL)
+	{
+		return false; 		
+	} // end if chek file is opened
+
+	readProgramFromFile(memory, sourceFile);
+
+	fclose(sourceFile);
+	return true;
+
+} // end function readProgram
+
+static void readProgramFromFile(int *memory, FILE *sourceFile)
 {
 	size_t wordCounter = 0;
 	int dataWord;
 	
-	printf("%02zu ? ", wordCounter);
-	while((dataWord = getDataWord()) != INPUT_BREAK_MARKER && wordCounter < MEMORY_SIZE)
+	char buffer[20];
+	
+	while(fgets(buffer, sizeof(buffer), sourceFile) != NULL)
 	{
-		if (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
-		{
-			showOutOfLimitErrorMessage();
-			printf("%02zu ? ", wordCounter);
-			continue;
-		} // end if limit check
-		memoryWrite(memory, wordCounter++, dataWord);
-		printf("%02zu ? ", wordCounter);
-	} // end while readData loop
+		printf("%zu ", wordCounter++);	
+		buffer[strcspn(buffer,"\n")] = 0;
+		puts(buffer);
+		buffer[0] = 0;
+	} // end while data from file read loop
 
-	puts("*** Program loading completed. ***");
+//	while((dataWord = getDataWord()) != INPUT_BREAK_MARKER && wordCounter < MEMORY_SIZE)
+//	{
+//		if (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
+//		{
+//			showOutOfLimitErrorMessage();
+//			printf("%02zu ? ", wordCounter);
+//			continue;
+//		} // end if limit check
+//		memoryWrite(memory, wordCounter++, dataWord);
+//		printf("%02zu ? ", wordCounter);
+//	} // end while readData loop
+//
+//	puts("*** Program loading completed. ***");
 } // end function readProgramfromConsole
 
 int getDataWord()
@@ -147,3 +171,23 @@ void showDivideByZeroMessage()
 	puts("*** Attempt to divide by zero***");
 } // end function showDivideByZeroMessage
 
+static FILE *openSourceFile()
+{
+	char fileName[50];
+	
+	FILE *sourceFile;
+
+	printf("%s: ", "Enter sml program file name" );
+	
+	fgets(fileName,sizeof(fileName), stdin);
+	fileName[strcspn(fileName,"\n")] = 0;
+	
+	if ((sourceFile = fopen(fileName,"r")) == NULL)
+	{
+		puts("*** ERROR ***");
+		printf("Can't open file %s\n", fileName);
+		puts("*** SIMPLETRON TERMINATED ***");
+	} // end if try open file
+
+	return sourceFile;
+} // end function openSourceFile
