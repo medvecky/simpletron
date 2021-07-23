@@ -1,8 +1,10 @@
 #ifndef _SIMPLETRON_IO_
 #define _SIMPLETRON_IO_
 
+#include <stdbool.h>
+
 void showWelcomeMessage();
-void readProgramFromConsole(int *memory);
+bool readProgram(int *memory);
 void showMemoryDump(int *memory);
 void showEmptyLine();	
 void showExecutionBeginsMessage();
