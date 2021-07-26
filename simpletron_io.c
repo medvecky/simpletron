@@ -191,3 +191,9 @@ static FILE *openSourceFile()
 
 	return sourceFile;
 } // end function openSourceFile
+
+void showMessageInvalidCommand(int operationCode, int instructionCounter)
+{
+	puts("*** FATAL ERROR ***");
+	printf("Illegal operation %d on address %02d\n", operationCode, instructionCounter);
+} // end function showMessageInvalidCommand
