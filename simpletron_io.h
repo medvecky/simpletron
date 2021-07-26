@@ -15,6 +15,7 @@ void showOutOfLimitErrorMessage();
 void showAccumulatorOverflowMessage();
 void showOutOfMemoryMessage();
 void showDivideByZeroMessage();
+void showMessageInvalidCommand(int operationCode, int instructionCounter);
 
 #define INPUT_BREAK_MARKER -99999
 

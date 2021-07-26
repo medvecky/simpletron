@@ -147,3 +147,9 @@ void showDivideByZeroMessage()
 	puts("*** Attempt to divide by zero***");
 } // end function showDivideByZeroMessage
 
+void showMessageInvalidCommand(int operationCode, int instructionCounter)
+{
+	puts("*** FATAL ERROR ***");
+	printf("Illegal operation %d on address %02d\n", operationCode, instructionCounter);
+} // end function showMessageInvalidCommand
+
