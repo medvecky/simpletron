@@ -116,6 +116,8 @@ void executeProgram(int *memory)
 			case BRANCHZERO:
 				branchzero();
 				continue;
+			case HALT:
+				break;
 			default:
 			  showMessageInvalidCommand(operationCode, instructionCounter);
 			  overflowFlag = true;
