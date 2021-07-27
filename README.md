@@ -33,6 +33,15 @@ COMMAND - four digit positive integer, first two digit operation code last two d
 1010 - read data from counsole to memory address 0010
 4003 - go to 3rd instruction
 ```
+
+After the first prompt, you need to enter the file name, which contains a file with machine codes without an empty line at the end.
+
+If simpletron loaded the program successfully, then the execution begins.
+
+The program can ask for user input.
+Input must be data word  (-9999 .. +9999)
+
+All console output repeated to simpletron_out.txt file. 
 ### Supported commands
 
 * READ  
