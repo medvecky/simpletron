@@ -3,22 +3,21 @@
 
 #include <stdbool.h>
 
-void showWelcomeMessage();
-bool readProgram(int *memory);
-void showMemoryDump(int *memory);
-void showEmptyLine();	
-void showExecutionBeginsMessage();
-void showExecutionTerminatedMessage();
-int getValidDataWord();
+void showWelcomeMessage(FILE *outputFile);
+bool readProgram(int *memory, FILE *outputFile);
+void showMemoryDump(int *memory, FILE *outputFile);
+void showEmptyLine(FILE *outputFile);	
+void showExecutionBeginsMessage(FILE *outputFile);
+void showExecutionTerminatedMessage(FILE *outputFile);
+int getValidDataWord(FILE *outputFile);
 int getDataWord();
-void showDataWord(int dataWord);
+void showDataWord(int dataWord, FILE *outputFile);
 void showInputPrompt();
-void showOutOfLimitErrorMessage();
-void showAccumulatorOverflowMessage();
-void showOutOfMemoryMessage();
-void showDivideByZeroMessage();
-void showMessageInvalidCommand(int operationCode, int instructionCounter);
-
-#define INPUT_BREAK_MARKER -99999
+void showOutOfLimitErrorMessage(FILE *ouputFile);
+void showAccumulatorOverflowMessage(FILE *ouputFile);
+void showOutOfMemoryMessage(FILE *outputFile);
+void showDivideByZeroMessage(FILE *outputFile);
+void showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile);
+void showMessageCantOpenOutputFile();
 
 #endif

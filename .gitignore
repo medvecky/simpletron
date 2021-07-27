@@ -4,6 +4,8 @@
 .*~
 *.swp
 simpletron
+*.sml
+*.txt
 # Object files
 *.o
 *.ko

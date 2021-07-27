@@ -5,7 +5,7 @@
 #define LOW_DATA_LIMIT -9999
 
 void showCpuDump();
-void executeProgram(int *memory);
+void executeProgram(int *memory, FILE *outputFile);
 int getCpuAccumulator();
 size_t getCpuInstructionCounter();
 int getCpuInstructionRegister();
