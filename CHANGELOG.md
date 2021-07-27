@@ -1,11 +1,19 @@
+## [v0.2.0] - 2021-07-27
+
+### Added
+	- program reading from file
+	- repeating program output to file
+### Deleted
+	- possibility to read the program from console
+
+## [v0.1.1] - 2021-07-26
+
+### Added
+	- Check for illegal operation in runtime
+
 ## [v0.1.0] - 2021-07-22
 
 ### Added
 	- Basic CPU, MEMORY, IO implementation
 	- Support for program input from the console
 	- Support for interaction with the program using a console
-
-## [v0.1.1] - 2021-07-26
-
-### Added
-	- Check for illegal operation in runtime
