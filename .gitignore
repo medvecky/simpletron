@@ -9,7 +9,8 @@ simpletron
 .cache/
 compile_commands.json
 tags
-
+bin/
+build/
 # Object files
 *.o
 *.ko
