@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "simpletron_io.h"
-#include "simpletron_cpu.h"
-#include "simpletron_memory.h"
+#include "modules/simpletron_io.h"
+#include "modules/simpletron_cpu.h"
+#include "modules/simpletron_memory.h"
 
 int main()
 {
