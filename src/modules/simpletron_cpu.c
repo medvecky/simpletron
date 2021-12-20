@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "simpletron_cpu.h"
-#include "simpletron_memory.h"
+#include "RAM.h"
 #include "IO.h"
 
 
@@ -160,7 +160,7 @@ int getCpuOperationCode()
 static void read(int * memory, size_t address, FILE *outputFile)
 {
 	IO_showInputPrompt();
-	memoryWrite(memory, address, IO_getValidDataWord(outputFile));
+	RAM_write(memory, address, IO_getValidDataWord(outputFile));
 } // end function read
 
 static void write(int * memory, size_t address, FILE *outputFile)
@@ -175,7 +175,7 @@ static void load(int * memory, size_t address)
 
 static void store(int * memory, size_t address)
 {
-	memoryWrite(memory, address, accumulator);
+	RAM_write(memory, address, accumulator);
 } // end function store
 
 static void add(int * memory, size_t address)

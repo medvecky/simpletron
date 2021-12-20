@@ -5,7 +5,7 @@
 #include <ctype.h>
 
 #include "IO.h"
-#include "simpletron_memory.h"
+#include "RAM.h"
 #include "simpletron_cpu.h"
 
 #define ERROR_VALUE 55555
@@ -80,7 +80,7 @@ static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile)
 			return false;
 		} // end if dataWord limit check
 		
-		memoryWrite(memory, wordCounter++, dataWord);
+		RAM_write(memory, wordCounter++, dataWord);
 	} // end while data from file read loop
 
 	puts("*** Program loading completed. ***");
