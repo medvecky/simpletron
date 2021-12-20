@@ -4,25 +4,30 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#include "simpletron_io.h"
+#include "IO.h"
 #include "simpletron_memory.h"
 #include "simpletron_cpu.h"
 
 #define ERROR_VALUE 55555
 #define WORD_SIZE 4 
+#define BUFFER_SIZE 20
+#define DUMP_PAGE_WIDTH 10
+#define FILENAME_LENGTH 50
 
 static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile);
 static FILE *openSourceFile(FILE *outputFile);
 static int parseInputString(char *buffer);
 static bool isInputStringValid(char *buffer);
+static int getDataWord();
+static void showOutOfLimitErrorMessage(FILE *ouputFile);
 
-void showWelcomeMessage(FILE *outputFile)
+void IO_showWelcomeMessage(FILE *outputFile)
 {
 	puts("*** Welcome to Simpletron! ***");
 	fputs("*** Welcome to Simpletron! ***\n",outputFile);
-} // end function showWelcomeMessage
+} // end function IO_showWelcomeMessage
 
-bool readProgram(int *memory, FILE *outputFile)
+bool IO_readProgram(int *memory, FILE *outputFile)
 {
 	FILE * sourceFile = openSourceFile(outputFile);
 	
@@ -40,14 +45,12 @@ bool readProgram(int *memory, FILE *outputFile)
 	fclose(sourceFile);
 	return true;
 
-} // end function readProgram
+} // end function IO_readProgram
 
 static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile)
 {
 	size_t wordCounter = 0;
-	int dataWord;
-	
-	char buffer[20];
+	char buffer[BUFFER_SIZE];
 	
 	while(fgets(buffer, sizeof(buffer), sourceFile) != NULL)
 	{
@@ -102,7 +105,7 @@ int getDataWord()
 	return dataWord;
 } // end function getDataWord
 
-int getValidDataWord(FILE *outputFile)
+int IO_getValidDataWord(FILE *outputFile)
 {
 	int dataWord = getDataWord();
 
@@ -115,9 +118,9 @@ int getValidDataWord(FILE *outputFile)
 	} // end while limit check
 
 	return dataWord;
-} // end function getValidDataWord
+} // end function IO_getValidDataWord
 
-void showMemoryDump(int *memory, FILE *outputFile)
+void IO_showMemoryDump(int *memory, FILE *outputFile)
 {
 	puts("MEMORY:");
 	fputs("MEMORY:\n", outputFile);
@@ -131,7 +134,7 @@ void showMemoryDump(int *memory, FILE *outputFile)
 
 	for(size_t index = 0; index < MEMORY_SIZE; index++)
 	{
-		if (index % 10 == 0)
+		if (index % DUMP_PAGE_WIDTH == 0)
 		{
 			printf("\n%zu\t", index);
 			fprintf(outputFile, "\n%zu\t", index);
@@ -142,25 +145,25 @@ void showMemoryDump(int *memory, FILE *outputFile)
 	} // end for data output
 	puts("");
 	fputs("\n", outputFile);
-} // end function showMemoryDump
+} // end function IO_showMemoryDump
 
-void showEmptyLine(FILE *outputFile)
+void IO_showEmptyLine(FILE *outputFile)
 {
 	puts("");
 	fputs("\n", outputFile);
-} // end function showEmptyLine
+} // end function IO_showEmptyLine
 
-void showExecutionBeginsMessage(FILE *outputFile)
+void IO_showExecutionBeginsMessage(FILE *outputFile)
 {
 	puts("*** Program execution begins. ***");
 	fputs("*** Program execution begins. ***\n",outputFile);
-} // end function showExecutionBeginsMessage
+} // end function IO_showExecutionBeginsMessage
 
-void showExecutionTerminatedMessage(FILE *outputFile)
+void IO_showExecutionTerminatedMessage(FILE *outputFile)
 {
 	puts("*** Simpletron execution terminated ***");	
 	fputs("*** Simpletron execution terminated ***\n", outputFile);	
-} // end function showExecutionTerminatedMessage
+} // end function IO_showExecutionTerminatedMessage
 
 void showCpuDump(FILE *outputFile)
 {
@@ -179,16 +182,16 @@ void showCpuDump(FILE *outputFile)
 	fprintf(outputFile, "operand:\t\t\t   %02d\n", getCpuOperand());
 } // end function showCpuDump
 
-void showDataWord(int dataWord, FILE *outputFile)
+void IO_showDataWord(int dataWord, FILE *outputFile)
 {
 	printf(" > %+05d\n", dataWord);
 	fprintf(outputFile, " > %+05d\n", dataWord);
-} // end function showDataWord
+} // end function IO_showDataWord
 
-void showInputPrompt()
+void IO_showInputPrompt()
 {
 	printf("%s", " ? ");
-} // end function showInputPromt
+} // end function IO_showInputPrompt
 
 void showOutOfLimitErrorMessage(FILE *outputFile)
 {
@@ -196,36 +199,36 @@ void showOutOfLimitErrorMessage(FILE *outputFile)
 	fputs("*** Entered data is out of limits ***\n", outputFile);
 } // end of showOutOfLimitErrorMessage
 
-void showAccumulatorOverflowMessage(FILE *outputFile)
+void IO_showAccumulatorOverflowMessage(FILE *outputFile)
 {
 	puts("*** FATAL ERROR  ***");
 	puts("*** accumulator overflow  ***");
 
 	fputs("*** FATAL ERROR  ***\n", outputFile);
 	fputs("*** accumulator overflow  ***\n", outputFile);
-} // end function showAccumulatorOverflowMessage
+} // end function IO_showAccumulatorOverflowMessage
 
-void showOutOfMemoryMessage(FILE *outputFile)
+void IO_showOutOfMemoryMessage(FILE *outputFile)
 {
 	puts("*** FATAL ERROR  ***");
 	puts("*** memory overflow  ***");
 
 	fputs("*** FATAL ERROR  ***\n", outputFile);
 	fputs("*** memory overflow  ***\n", outputFile);
-} // end function showOutOfMemory
+} // end function IO_showOutOfMemoryMessage
 
-void showDivideByZeroMessage(FILE *outputFile)
+void IO_showDivideByZeroMessage(FILE *outputFile)
 {
 	puts("*** FATAL ERROR  ***");
 	puts("*** Attempt to divide by zero***");
 
 	fputs("*** FATAL ERROR  ***\n", outputFile);
 	fputs("*** Attempt to divide by zero***\n", outputFile);
-} // end function showDivideByZeroMessage
+} // end function IO_showDivideByZeroMessage
 
 static FILE *openSourceFile(FILE *outputFile)
 {
-	char fileName[50];
+	char fileName[FILENAME_LENGTH];
 	
 	FILE *sourceFile;
 
@@ -243,19 +246,19 @@ static FILE *openSourceFile(FILE *outputFile)
 		fputs("*** ERROR ***\n", outputFile);
 		fprintf(outputFile,"Can't open file %s\n", fileName);
 		fputs("*** SIMPLETRON TERMINATED ***\n", outputFile);
-} // end if try open file
+        } // end if try open file
 
 	return sourceFile;
 } // end function openSourceFile
 
-void showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile)
+void IO_showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile)
 {
 	puts("*** FATAL ERROR ***");
 	printf("Illegal operation %d on address %02d\n", operationCode, instructionCounter);
 
 	fputs("*** FATAL ERROR ***\n", outputFile);
 	fprintf(outputFile, "Illegal operation %d on address %02d\n", operationCode, instructionCounter);
-} // end function showMessageInvalidCommand
+} // end function IO_showMessageInvalidCommand
 
 static int parseInputString(char *buffer)
 {
@@ -287,10 +290,10 @@ static bool isInputStringValid(char *buffer)
 	return true;
 } // end function isInputStringValid
 
-void showMessageCantOpenOutputFile()
+void IO_showMessageCantOpenOutputFile()
 {
 	puts("*** ERROR ***");
 	puts("*** Can't open output file ***");
 	puts("*** SIMPLETRON TERMINATED ***");
-} // end function showMessageCantOpenOutputFile();
+} // end function IO_showMessageCantOpenOutputFile();
 

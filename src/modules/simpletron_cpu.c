@@ -3,7 +3,7 @@
 
 #include "simpletron_cpu.h"
 #include "simpletron_memory.h"
-#include "simpletron_io.h"
+#include "IO.h"
 
 
 //CPU commands
@@ -73,7 +73,7 @@ void executeProgram(int *memory, FILE *outputFile)
 	operand = 0;
 	overflowFlag = false;
 
-	showExecutionBeginsMessage(outputFile);
+	IO_showExecutionBeginsMessage(outputFile);
 
 	while (instructionCounter < MEMORY_SIZE  && operationCode != HALT && !overflowFlag)
 	{	
@@ -119,7 +119,7 @@ void executeProgram(int *memory, FILE *outputFile)
 			case HALT:
 				break;
 			default:
-			  showMessageInvalidCommand(operationCode, instructionCounter, outputFile);
+			  IO_showMessageInvalidCommand(operationCode, instructionCounter, outputFile);
 			  overflowFlag = true;
 		} //end switch operation code
 
@@ -128,7 +128,7 @@ void executeProgram(int *memory, FILE *outputFile)
 	} // end while main loop
 
 	instructionCounter--;
-	showExecutionTerminatedMessage(outputFile);
+	IO_showExecutionTerminatedMessage(outputFile);
 
 } // end function execute progam
 
@@ -159,13 +159,13 @@ int getCpuOperationCode()
 
 static void read(int * memory, size_t address, FILE *outputFile)
 {
-	showInputPrompt();
-	memoryWrite(memory, address, getValidDataWord(outputFile));
+	IO_showInputPrompt();
+	memoryWrite(memory, address, IO_getValidDataWord(outputFile));
 } // end function read
 
 static void write(int * memory, size_t address, FILE *outputFile)
 {
-	showDataWord(memoryRead(memory, address),outputFile);	
+	IO_showDataWord(memoryRead(memory, address),outputFile);	
 } // end function write
 
 static void load(int * memory, size_t address)
@@ -195,7 +195,7 @@ static void divide(int * memory, size_t address, FILE *outputFile)
 	int divider = memoryRead(memory, address);
 	if (divider == 0)
 	{
-		showDivideByZeroMessage(outputFile);
+		IO_showDivideByZeroMessage(outputFile);
 		overflowFlag = true;
 		return;
 	}
@@ -247,7 +247,7 @@ static void checkAccumulatorOverflow(FILE *outputFile)
 {
 	if (isAccumulatorOverflow())
 	{
-		showAccumulatorOverflowMessage(outputFile);
+		IO_showAccumulatorOverflowMessage(outputFile);
 		overflowFlag = true;		
 	} // end if checkOverflow
 } // end function checkAccumulatorOverflow
@@ -260,7 +260,7 @@ static void goToValidLocation(FILE *outputFile)
 	}
 	else
 	{
-		showOutOfMemoryMessage(outputFile);
+		IO_showOutOfMemoryMessage(outputFile);
 		overflowFlag = true;
 	} // end if else check memory limit
 } // end function goToLocationWithValidation

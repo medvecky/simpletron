@@ -1,34 +1,37 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "modules/simpletron_io.h"
+#include "modules/IO.h"
 #include "modules/simpletron_cpu.h"
 #include "modules/simpletron_memory.h"
+
+#define OUTPUT_FILE "simpletron_out.txt"
 
 int main()
 {
 	//Memory storage
 	int memory[MEMORY_SIZE] = {+0000};
 
-	FILE * outputFile = fopen("simpletron_out.txt", "w");
+	FILE * outputFile = fopen(OUTPUT_FILE, "w");
 	if (outputFile == NULL)
 	{
-		showMessageCantOpenOutputFile();
-		return 1;
-	}
+		IO_showMessageCantOpenOutputFile();
+		return EXIT_FAILURE;
+	} // end if check ouput gfile exists
 
-	showWelcomeMessage(outputFile);
+	IO_showWelcomeMessage(outputFile);
 	
 
-	if (readProgram(memory, outputFile))
+	if (IO_readProgram(memory, outputFile))
 	{
 		executeProgram(memory,outputFile);
 
 		showCpuDump(outputFile);
-		showEmptyLine(outputFile);	
-		showMemoryDump(memory, outputFile);
+		IO_showEmptyLine(outputFile);	
+		IO_showMemoryDump(memory, outputFile);
 	} // end if check program loaded 
 	
 	fclose(outputFile);
 
-	return 0;
+	return EXIT_SUCCESS;
 } // end main
