@@ -6,6 +6,11 @@
 simpletron
 *.sml
 *.txt
+.cache/
+compile_commands.json
+tags
+bin/
+build/
 # Object files
 *.o
 *.ko

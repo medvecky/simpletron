@@ -1,12 +1,29 @@
-simpletron: simpletron.o simpletron_io.o simpletron_memory.o simpletron_cpu.o
-	clang -o simpletron simpletron.o simpletron_io.o simpletron_memory.o simpletron_cpu.o
-simpletron.o: simpletron.c
-	clang -c simpletron.c
-simpletron_io.o: simpletron_io.c
-	clang -c simpletron_io.c
-simpletron_memory.o: simpletron_memory.c
-	clang -c simpletron_memory.c
-simpletron_cpu.o: simpletron_cpu.c
-	clang -c simpletron_cpu.c
+CFLAGS=-g -O2 -Wall -Wextra -std=c2x -pedantic $(OPTFLAGS)
+CC=clang
+MODULES_OBJECT_DIR=build/modules
+MODULES_SOURCE_DIR=src/modules
+MODULES_SOURCES=$(wildcard $(MODULES_SOURCE_DIR)/*.c )
+MODULES_OBJECTS=$(patsubst $(MODULES_SOURCE_DIR)/%.c, $(MODULES_OBJECT_DIR)/%.o, $(MODULES_SOURCES))
+SIMPLETRON_OBJECT=build/simpletron.o
+SIMPLETRON_SOURCE=src/simpletron.c
+SIMPLETRON_BIN=bin/simpletron
+
+simpletron: build $(SIMPLETRON_OBJECT) $(MODULES_OBJECTS)
+	$(CC) -o $(SIMPLETRON_BIN) $(CFLAGS) $(SIMPLETRON_OBJECT) $(MODULES_OBJECTS)
+	@ctags -R .
+$(SIMPLETRON_OBJECT): $(SIMPLETRON_SOURCE)
+	$(CC) -c $(CFLAGS)  $(SIMPLETRON_SOURCE) -o $(SIMPLETRON_OBJECT)
+$(MODULES_OBJECTS): $(MODULES_OBJECT_DIR)/%.o: $(MODULES_SOURCE_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@ 
+
+build:
+	@mkdir -p build/modules
+	@mkdir -p bin
+
 clean:
-	rm *~ .*~ *.o simpletron
+	rm -rf bin
+	rm -rf build
+	rm -f *~
+	rm -f *.*~
+	rm -f src/*.*~
+	rm -f src/modules/*.*~
