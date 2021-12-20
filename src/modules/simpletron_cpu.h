@@ -1,6 +1,8 @@
 #ifndef _SIMPLETRON_CPU_
 #define _SIMPLETRON_CPU_
 
+#include <stdio.h>
+
 #define HIGH_DATA_LIMIT 9999
 #define LOW_DATA_LIMIT -9999
 
