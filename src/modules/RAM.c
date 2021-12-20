@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-#include "simpletron_memory.h"
+#include "RAM.h"
  
-void memoryWrite(int *memory, size_t address, int word)
+void RAM_write(int *memory, size_t address, int word)
 {
 	memory[address] = word;
-} // end function memoryWrite
+} // end function RAM_write
 
 int  memoryRead(int *memory, size_t instructionCounter)
 {

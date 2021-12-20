@@ -3,7 +3,7 @@
 
 #include "modules/IO.h"
 #include "modules/simpletron_cpu.h"
-#include "modules/simpletron_memory.h"
+#include "modules/RAM.h"
 
 #define OUTPUT_FILE "simpletron_out.txt"
 
