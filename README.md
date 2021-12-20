@@ -20,7 +20,7 @@ Simpletron CPU contains an accumulator and can handle basic arithmetic operation
 
 ```bash
 make simpletron
-./simpletron
+bin/simpletron
 ```
 
 ## Operation manual
@@ -35,7 +35,16 @@ COMMAND - four digit positive integer, first two digit operation code last two d
 ```
 
 After the first prompt, you need to enter the file name, which contains a file with machine codes without an empty line at the end.
-
+Program text example:
+```
+1007
+1008
+2007
+3008
+2109
+1109
+4300
+```
 If simpletron loaded the program successfully, then the execution begins.
 
 The program can ask for user input.
@@ -110,13 +119,13 @@ All console output repeated to simpletron_out.txt file.
 #### Sum of two variables
 
 ```
-00 ? 1007 // Read A and save to address 0007
-01 ? 1008 // Read B ans save to address 0008
-02 ? 2007 // Load A to accumulator
-03 ? 3008 // Add B
-04 ? 2109 // store accumulator to C (address 0009)
-05 ? 1109 // output C value to console
-06 ? 4300 // end of program
+1007 // Read A and save to address 0007
+1008 // Read B ans save to address 0008
+2007 // Load A to accumulator
+3008 // Add B
+2109 // store accumulator to C (address 0009)
+1109 // output C value to console
+4300 // end of program
 ```
 Output:
 ```
@@ -149,15 +158,15 @@ MEMORY:
 #### Get a larger value of two
 
 ```
-00 ? 1009 // Read A to address 0009
-01 ? 1010 // Read B to address 0010
-02 ? 2009 // Load to accumulator
-03 ? 3110 // Substract B from accumulator
-04 ? 4107 // if accumulator negative go to 07
-05 ? 1109 // Write A to console
-06 ? 4300 // End of program
-07 ? 1110 // Write B to console 
-08 ? 4300 // End of program
+1009 // Read A to address 0009
+1010 // Read B to address 0010
+2009 // Load to accumulator
+3110 // Substract B from accumulator
+4107 // if accumulator negative go to 07
+1109 // Write A to console
+4300 // End of program
+1110 // Write B to console 
+4300 // End of program
 ```
 
 Output:
@@ -219,14 +228,14 @@ MEMORY:
 calculate the sum of positive numbers and exit if entered a negative number
 
 ```
-00 ? 1099 // Input A (address 0099)
-01 ? 2099 // Load A to Accumulator
-02 ? 4106 // if Accumulator < 0 got to 0006
-03 ? 3098 // Accumulator += SUM (address 0098)
-04 ? 2198 // SUM = Accumulator
-05 ? 4000 // go to 0000
-06 ? 1198 // Print SUM 
-07 ? 4300 // End 
+1099 // Input A (address 0099)
+2099 // Load A to Accumulator
+4106 // if Accumulator < 0 got to 0006
+3098 // Accumulator += SUM (address 0098)
+2198 // SUM = Accumulator
+4000 // go to 0000
+1198 // Print SUM 
+4300 // End 
 ```
  Output:
  ```
@@ -262,24 +271,24 @@ MEMORY:
 
 #### Calculate average
 ```
-00 ? 1099 // Get Number of arguments 
-01 ? 1098 // Step for counter
-02 ? 2099 // Accumulator = Number of arguments
-03 ? 2197 // Counter = Accumulator
-04 ? 1096 // Get Nth argument
-05 ? 2096 // Accumulator = Argument 
-06 ? 3095 // Accumulator += Sum
-07 ? 2195 // Sum = Accumulator
-08 ? 2097 // Accumulator = Counter
-09 ? 3198 // Accumulator -= Step
-10 ? 4213 // If Accumulator == 0 go to 13
-11 ? 2197 // Counter = Accumulator 
-12 ? 4004 // Go to 04
-13 ? 2095 // Accumulator = Sum 
-14 ? 3299 // Accumulator /= Number of Arguments
-15 ? 2194 // Result = Accumulator
-16 ? 1194 // Print result 
-17 ? 4300 // End
+1099 // Get Number of arguments 
+1098 // Step for counter
+2099 // Accumulator = Number of arguments
+2197 // Counter = Accumulator
+1096 // Get Nth argument
+2096 // Accumulator = Argument 
+3095 // Accumulator += Sum
+2195 // Sum = Accumulator
+2097 // Accumulator = Counter
+3198 // Accumulator -= Step
+4213 // If Accumulator == 0 go to 13
+2197 // Counter = Accumulator 
+4004 // Go to 04
+2095 // Accumulator = Sum 
+3299 // Accumulator /= Number of Arguments
+2194 // Result = Accumulator
+1194 // Print result 
+4300 // End
 ```
 Output:
 ```
@@ -316,22 +325,22 @@ MEMORY:
 
 #### Get max number from numbers series 
 ```
-00 ? 1099 // Read default max number 
-01 ? 1098 // Read step of iteration
-02 ? 1097 // Read Series size (Counter)
-03 ? 1096 // Read Nth series number
-04 ? 2096 // Accumulator = Nth number
-05 ? 3199 // Accumulator -= max number
-06 ? 4109 // If Accumulator < 0 go to 09
-07 ? 2096 // Accumulator = Nth number
-08 ? 2199 // Max number = Accumulator
-09 ? 2097 // Accumulator = Iteration counter
-10 ? 3198 // Accumulator -= iteration step
-11 ? 2197 // Couunter = Accumulator
-12 ? 4214 // If counter == 0 go to 14
-13 ? 4003 // go to 3
-14 ? 1199 // Print Max number
-15 ? 4300 // End
+1099 // Read default max number 
+1098 // Read step of iteration
+1097 // Read Series size (Counter)
+1096 // Read Nth series number
+2096 // Accumulator = Nth number
+3199 // Accumulator -= max number
+4109 // If Accumulator < 0 go to 09
+2096 // Accumulator = Nth number
+2199 // Max number = Accumulator
+2097 // Accumulator = Iteration counter
+3198 // Accumulator -= iteration step
+2197 // Couunter = Accumulator
+4214 // If counter == 0 go to 14
+4003 // go to 3
+1199 // Print Max number
+4300 // End
 ```
 Output:
 ```
