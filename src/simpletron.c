@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "modules/IO.h"
-#include "modules/simpletron_cpu.h"
+#include "modules/CPU.h"
 #include "modules/RAM.h"
 
 #define OUTPUT_FILE "simpletron_out.txt"
@@ -24,9 +24,9 @@ int main()
 
 	if (IO_readProgram(memory, outputFile))
 	{
-		executeProgram(memory,outputFile);
+		CPU_executeProgram(memory,outputFile);
 
-		showCpuDump(outputFile);
+		IO_showCpuDump(outputFile);
 		IO_showEmptyLine(outputFile);	
 		IO_showMemoryDump(memory, outputFile);
 	} // end if check program loaded 

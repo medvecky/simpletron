@@ -18,5 +18,5 @@ void IO_showOutOfMemoryMessage(FILE *outputFile);
 void IO_showDivideByZeroMessage(FILE *outputFile);
 void IO_showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile);
 void IO_showMessageCantOpenOutputFile();
-
+void IO_showCpuDump();
 #endif

@@ -6,7 +6,7 @@
 
 #include "IO.h"
 #include "RAM.h"
-#include "simpletron_cpu.h"
+#include "CPU.h"
 
 #define ERROR_VALUE 55555
 #define WORD_SIZE 4 
@@ -165,22 +165,22 @@ void IO_showExecutionTerminatedMessage(FILE *outputFile)
 	fputs("*** Simpletron execution terminated ***\n", outputFile);	
 } // end function IO_showExecutionTerminatedMessage
 
-void showCpuDump(FILE *outputFile)
+void IO_showCpuDump(FILE *outputFile)
 {
 	puts("REGISTERS:");
-	printf("accumulator:\t\t\t%+05d\n", getCpuAccumulator());
-	printf("instrcutionCounter:\t\t   %02zu\n", getCpuInstructionCounter());
-	printf("instructionRegister:\t\t%+05d\n", getCpuInstructionRegister());
-	printf("operationCode:\t\t\t   %02d\n", getCpuOperationCode());
-	printf("operand:\t\t\t   %02d\n", getCpuOperand());
+	printf("accumulator:\t\t\t%+05d\n", CPU_getAccumulator());
+	printf("instrcutionCounter:\t\t   %02zu\n", CPU_getInstructionCounter());
+	printf("instructionRegister:\t\t%+05d\n", CPU_getInstructionRegister());
+	printf("operationCode:\t\t\t   %02d\n", CPU_getOperationCode());
+	printf("operand:\t\t\t   %02d\n", CPU_getOperand());
 
 	fputs("REGISTERS:\n", outputFile);
-	fprintf(outputFile, "accumulator:\t\t\t%+05d\n", getCpuAccumulator());
-	fprintf(outputFile, "instrcutionCounter:\t\t   %02zu\n", getCpuInstructionCounter());
-	fprintf(outputFile, "instructionRegister:\t\t%+05d\n", getCpuInstructionRegister());
-	fprintf(outputFile, "operationCode:\t\t\t   %02d\n", getCpuOperationCode());
-	fprintf(outputFile, "operand:\t\t\t   %02d\n", getCpuOperand());
-} // end function showCpuDump
+	fprintf(outputFile, "accumulator:\t\t\t%+05d\n", CPU_getAccumulator());
+	fprintf(outputFile, "instrcutionCounter:\t\t   %02zu\n", CPU_getInstructionCounter());
+	fprintf(outputFile, "instructionRegister:\t\t%+05d\n", CPU_getInstructionRegister());
+	fprintf(outputFile, "operationCode:\t\t\t   %02d\n", CPU_getOperationCode());
+	fprintf(outputFile, "operand:\t\t\t   %02d\n", CPU_getOperand());
+} // end function IO_showCpuDump
 
 void IO_showDataWord(int dataWord, FILE *outputFile)
 {

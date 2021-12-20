@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "simpletron_cpu.h"
+#include "CPU.h"
 #include "RAM.h"
 #include "IO.h"
 
@@ -63,8 +63,7 @@ static bool isAccumulatorOverflow();
 static void checkAccumulatorOverflow();
 static void goToValidLocation();
 
-void executeProgram(int *memory, FILE *outputFile)
-
+void CPU_executeProgram(int *memory, FILE *outputFile)
 {
 	accumulator = 0;
 	instructionCounter = 0;
@@ -77,7 +76,7 @@ void executeProgram(int *memory, FILE *outputFile)
 
 	while (instructionCounter < MEMORY_SIZE  && operationCode != HALT && !overflowFlag)
 	{	
-		instructionRegister = memoryRead(memory, instructionCounter);
+		instructionRegister = RAM_read(memory, instructionCounter);
 		operationCode = instructionRegister / 100;
 		operand = instructionRegister % 100;
 		
@@ -130,32 +129,32 @@ void executeProgram(int *memory, FILE *outputFile)
 	instructionCounter--;
 	IO_showExecutionTerminatedMessage(outputFile);
 
-} // end function execute progam
+} // end function CPU_executeProgram
 
-int getCpuAccumulator()
+int CPU_getAccumulator()
 {
 	return accumulator;
-} // end function getCpuAccumulator
+} // end function CPU_getAccumulator
 
-size_t getCpuInstructionCounter()
+size_t CPU_getInstructionCounter()
 {
 	return instructionCounter;
-} // end function getCpuInstructionCounter
+} // end function CPU_getInstructionCounter
 
-int getCpuInstructionRegister()
+int CPU_getInstructionRegister()
 {
 	return instructionRegister;
-} // end function getCpuInstructionRegister
+} // end function CPU_getInstructionRegister
 
-int getCpuOperand()
+int CPU_getOperand()
 {
 	return operand;
-} // end function getCpuOperand
+} // end function CPU_getOperand
 
-int getCpuOperationCode()
+int CPU_getOperationCode()
 {
 	return operationCode;
-} // end function getCpuOperationCode
+} // end function CPU_getOperationCode
 
 static void read(int * memory, size_t address, FILE *outputFile)
 {
@@ -165,12 +164,12 @@ static void read(int * memory, size_t address, FILE *outputFile)
 
 static void write(int * memory, size_t address, FILE *outputFile)
 {
-	IO_showDataWord(memoryRead(memory, address),outputFile);	
+	IO_showDataWord(RAM_read(memory, address),outputFile);	
 } // end function write
 
 static void load(int * memory, size_t address)
 {
-	accumulator = memoryRead(memory, address);
+	accumulator = RAM_read(memory, address);
 } // end function load
 
 static void store(int * memory, size_t address)
@@ -180,19 +179,19 @@ static void store(int * memory, size_t address)
 
 static void add(int * memory, size_t address)
 {
-	accumulator += memoryRead(memory, address);
+	accumulator += RAM_read(memory, address);
 	checkAccumulatorOverflow();
 } // end function add 
 
 static void substract(int * memory, size_t address)
 {
-	accumulator -= memoryRead(memory, address);
+	accumulator -= RAM_read(memory, address);
 	checkAccumulatorOverflow();
 } // end function substract 
 
 static void divide(int * memory, size_t address, FILE *outputFile)
 {
-	int divider = memoryRead(memory, address);
+	int divider = RAM_read(memory, address);
 	if (divider == 0)
 	{
 		IO_showDivideByZeroMessage(outputFile);
@@ -205,7 +204,7 @@ static void divide(int * memory, size_t address, FILE *outputFile)
 
 static void multiply(int * memory, size_t address)
 {
-	accumulator *= memoryRead(memory, address);
+	accumulator *= RAM_read(memory, address);
 	checkAccumulatorOverflow();
 } // end function multiply 
 
@@ -241,7 +240,7 @@ static void branchzero()
 static bool isAccumulatorOverflow()
 {
 	return (accumulator < LOW_DATA_LIMIT || accumulator > HIGH_DATA_LIMIT);
-}
+} // end function isAccumulatorOverflow
 
 static void checkAccumulatorOverflow(FILE *outputFile)
 {
