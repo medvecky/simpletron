@@ -1,0 +1,10 @@
+version: "3"
+services:
+  gcc:
+    container_name: gcc
+    build: .
+    image: simpletron_gcc
+    tty: true
+    stdin_open: true
+    volumes:
+      - "./:/home/project"
