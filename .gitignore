@@ -11,6 +11,8 @@ compile_commands.json
 tags
 bin/
 build/
+cpputest/
+simpletron_tests
 # Object files
 *.o
 *.ko
