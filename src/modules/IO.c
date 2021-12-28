@@ -266,7 +266,7 @@ static int parseInputString(char *buffer)
 
 	if (isInputStringValid(buffer))
 	{
-		return strtoul(buffer, &remainderPtr, 0); 
+		return (int) strtoul(buffer, &remainderPtr, 0); 
 	} // end if string validation 
 
 	return ERROR_VALUE;

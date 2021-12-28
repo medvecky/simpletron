@@ -1,13 +1,21 @@
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "RAM.h"
  
-void RAM_write(int *memory, size_t address, int word)
+bool RAM_write(int *memory, size_t address, int word)
 {
-	memory[address] = word;
+    if (address < 0 || address >= MEMORY_SIZE)
+    {
+        return false;
+    } // end if check address boundary
+    
+    memory[address] = word;
+    
+    return true;
 } // end function RAM_write
 
-int   RAM_read(int *memory, size_t instructionCounter)
+int   RAM_read(int *memory, size_t address)
 {
-	return memory[instructionCounter];
+    return memory[address];
 } // end function memoryRead

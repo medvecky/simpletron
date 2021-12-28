@@ -24,8 +24,8 @@ endif
 # SRC_DIRS specifies directories containing
 # production code C and CPP files.
 #
-SRC_FILES += src/simpletron.c 
-SRC_DIRS += src
+SRC_FILES += src/modules/RAM.c
+SRC_DIRS += src/modules
 
 # --- TEST_SRC_FILES and TEST_SRC_DIRS ---
 # Test files are always included in he build.
@@ -54,7 +54,7 @@ CPPUTEST_USE_EXTENSIONS = Y
 # containing directory
 INCLUDE_DIRS += $(CPPUTEST_HOME)/include
 INCLUDE_DIRS += $(CPPUTEST_HOME)/include/Platforms/Gcc
-INCLUDE_DIRS += example-include
+INCLUDE_DIRS += src/modules
 INCLUDE_DIRS += example-fff
 INCLUDE_DIRS += tests/exploding-fakes
 INCLUDE_DIRS += tests/fff
@@ -75,9 +75,9 @@ INCLUDE_DIRS += tests/fff
 #
 # This is kind of a kludge, but it causes the
 # .o and .d files to be put under objs.
-CPPUTEST_OBJS_DIR = test-obj
+CPPUTEST_OBJS_DIR = build/test-obj
 
-CPPUTEST_LIB_DIR = test-lib
+CPPUTEST_LIB_DIR = build/test-lib
 
 # You may have to tweak these compiler flags
 #    CPPUTEST_WARNINGFLAGS - apply to C and C++
