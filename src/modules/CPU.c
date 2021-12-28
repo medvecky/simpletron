@@ -118,7 +118,7 @@ void CPU_executeProgram(int *memory, FILE *outputFile)
 			case HALT:
 				break;
 			default:
-			  IO_showMessageInvalidCommand(operationCode, instructionCounter, outputFile);
+			  IO_showMessageInvalidCommand(operationCode, (int) instructionCounter, outputFile);
 			  overflowFlag = true;
 		} //end switch operation code
 
