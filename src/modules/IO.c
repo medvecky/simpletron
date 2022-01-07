@@ -7,18 +7,17 @@
 #include "IO.h"
 #include "RAM.h"
 #include "CPU.h"
+#include "IO_getDataWord.h"
+#include "IO_openSourceFile.h"
 
 #define ERROR_VALUE 55555
 #define WORD_SIZE 4 
 #define BUFFER_SIZE 20
 #define DUMP_PAGE_WIDTH 10
-#define FILENAME_LENGTH 50
 
 static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile);
-static FILE *openSourceFile(FILE *outputFile);
 static int parseInputString(char *buffer);
 static bool isInputStringValid(char *buffer);
-static int getDataWord();
 static void showOutOfLimitErrorMessage(FILE *ouputFile);
 
 void IO_showWelcomeMessage(FILE *outputFile)
@@ -90,28 +89,12 @@ static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile)
 	return true;
 } // end function readProgramfromConsole
 
-int getDataWord()
-{
-	int dataWord;
-
-	while(scanf("%d", &dataWord) != 1) 
-	{
-		while (getchar() != '\n');
-		puts("Invalid data format.");
-		puts("Please enter correct data word");
-		printf(" %c ", '?');
-	} // end while read data end validation
-	while (getchar() != '\n');
-	return dataWord;
-} // end function getDataWord
-
 int IO_getValidDataWord(FILE *outputFile)
 {
 	int dataWord = getDataWord();
 
 	while (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
 	{
-
 		showOutOfLimitErrorMessage(outputFile);
 		printf(" %c ", '?');
 		dataWord = getDataWord();
@@ -225,31 +208,6 @@ void IO_showDivideByZeroMessage(FILE *outputFile)
 	fputs("*** FATAL ERROR  ***\n", outputFile);
 	fputs("*** Attempt to divide by zero***\n", outputFile);
 } // end function IO_showDivideByZeroMessage
-
-static FILE *openSourceFile(FILE *outputFile)
-{
-	char fileName[FILENAME_LENGTH];
-	
-	FILE *sourceFile;
-
-	printf("%s: ", "Enter sml program file name" );
-	
-	fgets(fileName,sizeof(fileName), stdin);
-	fileName[strcspn(fileName,"\n")] = 0;
-	
-	if ((sourceFile = fopen(fileName,"r")) == NULL)
-	{
-		puts("*** ERROR ***");
-		printf("Can't open file %s\n", fileName);
-		puts("*** SIMPLETRON TERMINATED ***");
-
-		fputs("*** ERROR ***\n", outputFile);
-		fprintf(outputFile,"Can't open file %s\n", fileName);
-		fputs("*** SIMPLETRON TERMINATED ***\n", outputFile);
-        } // end if try open file
-
-	return sourceFile;
-} // end function openSourceFile
 
 void IO_showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile)
 {
