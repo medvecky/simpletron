@@ -1,3 +1,12 @@
+##[v0.4.0] - 2022-01-12
+
+### Added 
+    - Possibility to use docker as build and run environment
+    - unit test coverage by CPPUTEST
+
+### Changed
+    - modules structure
+
 ## [v0.3.0] - 2021-12-20
 
 ### Changed 
