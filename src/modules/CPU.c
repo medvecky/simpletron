@@ -4,7 +4,9 @@
 #include "CPU.h"
 #include "RAM.h"
 #include "IO.h"
-
+#include "IO_showDataWord.h"
+#include "IO_showAccumulatorOverflowMessage.h"
+#include "IO_showDivideByZeroMessage.h"
 
 //CPU commands
 #define HALT 43
@@ -118,7 +120,7 @@ void CPU_executeProgram(int *memory, FILE *outputFile)
 			case HALT:
 				break;
 			default:
-			  IO_showMessageInvalidCommand(operationCode, instructionCounter, outputFile);
+			  IO_showMessageInvalidCommand(operationCode, (int) instructionCounter, outputFile);
 			  overflowFlag = true;
 		} //end switch operation code
 

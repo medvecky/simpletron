@@ -13,12 +13,33 @@ Simpletron CPU contains an accumulator and can handle basic arithmetic operation
 
 ### Prerequisites
 
+* Installed [Docker](https://www.docker.com/)
+
+or for local setup:
 * Installed [clang](https://clang.llvm.org/)
 * Installed [gnu make](https://www.gnu.org/software/make/)
+* Installed [ctags](https://github.com/universal-ctags/ctags)
 
-### Build and run 
+### Build and run Docker
 
 ```bash
+git clone git://github.com/cpputest/cpputest.git
+docker-compose up -d
+./docker-make-tests.sh
+./docker-make.sh
+./docker-simpletron.sh
+```
+
+Get interactive shell in docker container 
+```bash
+./docker-shell.sh
+```
+
+### Build and run local 
+
+```bash
+git clone git://github.com/cpputest/cpputest.git
+./make-tests.sh
 make simpletron
 bin/simpletron
 ```

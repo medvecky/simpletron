@@ -1,0 +1,12 @@
+version: "3"
+services:
+  simpletron_docker:
+    container_name: simpletron_docker
+    build: .
+    image: simpletron_docker
+    tty: true
+    stdin_open: true
+    environment:
+    - CPPUTEST_HOME=  
+    volumes:
+      - "./:/home/project"

@@ -7,19 +7,20 @@
 #include "IO.h"
 #include "RAM.h"
 #include "CPU.h"
+#include "IO_getDataWord.h"
+#include "IO_openSourceFile.h"
+#include "IO_showDataWord.h"
+#include "IO_showAccumulatorOverflowMessage.h"
+#include "IO_showDivideByZeroMessage.h"
 
 #define ERROR_VALUE 55555
 #define WORD_SIZE 4 
 #define BUFFER_SIZE 20
 #define DUMP_PAGE_WIDTH 10
-#define FILENAME_LENGTH 50
 
 static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile);
-static FILE *openSourceFile(FILE *outputFile);
 static int parseInputString(char *buffer);
 static bool isInputStringValid(char *buffer);
-static int getDataWord();
-static void showOutOfLimitErrorMessage(FILE *ouputFile);
 
 void IO_showWelcomeMessage(FILE *outputFile)
 {
@@ -46,6 +47,20 @@ bool IO_readProgram(int *memory, FILE *outputFile)
 	return true;
 
 } // end function IO_readProgram
+
+int IO_getValidDataWord(FILE *outputFile)
+{
+	int dataWord = getDataWord();
+
+	while (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
+	{
+		IO_showOutOfLimitErrorMessage(outputFile);
+		printf(" %c ", '?');
+		dataWord = getDataWord();
+	} // end while limit check
+
+	return dataWord;
+} // end function IO_getValidDataWord
 
 static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile)
 {
@@ -89,36 +104,6 @@ static bool readProgramFromFile(int *memory, FILE *sourceFile, FILE *outputFile)
 	
 	return true;
 } // end function readProgramfromConsole
-
-int getDataWord()
-{
-	int dataWord;
-
-	while(scanf("%d", &dataWord) != 1) 
-	{
-		while (getchar() != '\n');
-		puts("Invalid data format.");
-		puts("Please enter correct data word");
-		printf(" %c ", '?');
-	} // end while read data end validation
-	while (getchar() != '\n');
-	return dataWord;
-} // end function getDataWord
-
-int IO_getValidDataWord(FILE *outputFile)
-{
-	int dataWord = getDataWord();
-
-	while (dataWord < LOW_DATA_LIMIT || dataWord > HIGH_DATA_LIMIT)
-	{
-
-		showOutOfLimitErrorMessage(outputFile);
-		printf(" %c ", '?');
-		dataWord = getDataWord();
-	} // end while limit check
-
-	return dataWord;
-} // end function IO_getValidDataWord
 
 void IO_showMemoryDump(int *memory, FILE *outputFile)
 {
@@ -182,31 +167,17 @@ void IO_showCpuDump(FILE *outputFile)
 	fprintf(outputFile, "operand:\t\t\t   %02d\n", CPU_getOperand());
 } // end function IO_showCpuDump
 
-void IO_showDataWord(int dataWord, FILE *outputFile)
-{
-	printf(" > %+05d\n", dataWord);
-	fprintf(outputFile, " > %+05d\n", dataWord);
-} // end function IO_showDataWord
 
 void IO_showInputPrompt()
 {
 	printf("%s", " ? ");
 } // end function IO_showInputPrompt
 
-void showOutOfLimitErrorMessage(FILE *outputFile)
+void IO_showOutOfLimitErrorMessage(FILE *outputFile)
 {
 	puts("*** Entered data is out of limits ***");
 	fputs("*** Entered data is out of limits ***\n", outputFile);
 } // end of showOutOfLimitErrorMessage
-
-void IO_showAccumulatorOverflowMessage(FILE *outputFile)
-{
-	puts("*** FATAL ERROR  ***");
-	puts("*** accumulator overflow  ***");
-
-	fputs("*** FATAL ERROR  ***\n", outputFile);
-	fputs("*** accumulator overflow  ***\n", outputFile);
-} // end function IO_showAccumulatorOverflowMessage
 
 void IO_showOutOfMemoryMessage(FILE *outputFile)
 {
@@ -216,40 +187,6 @@ void IO_showOutOfMemoryMessage(FILE *outputFile)
 	fputs("*** FATAL ERROR  ***\n", outputFile);
 	fputs("*** memory overflow  ***\n", outputFile);
 } // end function IO_showOutOfMemoryMessage
-
-void IO_showDivideByZeroMessage(FILE *outputFile)
-{
-	puts("*** FATAL ERROR  ***");
-	puts("*** Attempt to divide by zero***");
-
-	fputs("*** FATAL ERROR  ***\n", outputFile);
-	fputs("*** Attempt to divide by zero***\n", outputFile);
-} // end function IO_showDivideByZeroMessage
-
-static FILE *openSourceFile(FILE *outputFile)
-{
-	char fileName[FILENAME_LENGTH];
-	
-	FILE *sourceFile;
-
-	printf("%s: ", "Enter sml program file name" );
-	
-	fgets(fileName,sizeof(fileName), stdin);
-	fileName[strcspn(fileName,"\n")] = 0;
-	
-	if ((sourceFile = fopen(fileName,"r")) == NULL)
-	{
-		puts("*** ERROR ***");
-		printf("Can't open file %s\n", fileName);
-		puts("*** SIMPLETRON TERMINATED ***");
-
-		fputs("*** ERROR ***\n", outputFile);
-		fprintf(outputFile,"Can't open file %s\n", fileName);
-		fputs("*** SIMPLETRON TERMINATED ***\n", outputFile);
-        } // end if try open file
-
-	return sourceFile;
-} // end function openSourceFile
 
 void IO_showMessageInvalidCommand(int operationCode, int instructionCounter, FILE *outputFile)
 {
@@ -266,7 +203,7 @@ static int parseInputString(char *buffer)
 
 	if (isInputStringValid(buffer))
 	{
-		return strtoul(buffer, &remainderPtr, 0); 
+		return (int) strtoul(buffer, &remainderPtr, 0); 
 	} // end if string validation 
 
 	return ERROR_VALUE;
