@@ -15,7 +15,7 @@ bool RAM_write(int *memory, size_t address, int word)
     return true;
 } // end function RAM_write
 
-int   RAM_read(int *memory, size_t address)
+int RAM_read(int *memory, size_t address)
 {
     return memory[address];
 } // end function memoryRead
