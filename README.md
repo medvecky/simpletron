@@ -2,11 +2,17 @@
 The Simpletron, software-based simulation of a primitive computer. 
 
 ## Description
-The simpletron equipped with 100 words of memory. Words can be referenced by their location number 00 .. 99.
-Word is a signed 4 digit decimal as +0001, +3364, -1293.
-Word can be data or instruction. Instruction always positive; data can be positive or negative. First, two digits of the word are operation second operands. 
+Simpletron has the following parts:
+ - A processor with only an accumulator register
+ - A memory of 100 words where stores code and data
+ - Input and output, which can interact with console and files. 
 
-Simpletron CPU contains an accumulator and can handle basic arithmetic operations, memory and console IO operations, basic program branching. 
+Memory word is a signed four-digit decimal as +0001, +3364, -1293.
+Word can be data or instruction. Instruction is always positive; data can be positive or negative. First, two digits of the word are operation second operands.
+
+Simpletron loads the programs in machine codes from file to memory and executes them.
+Users can enter additional data from the console. Results show in console and output file.  
+Simpletron supports basic IO, memory, branching and arithmetic operations. 
 
 
 ## App Setup
